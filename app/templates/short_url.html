@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UrlShortener</title>
+        <link rel="shortcut icon" href="/static/Logo.png" type="image/x-icon">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="/static/style.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+
+        <div class="container">
+
+            <div class="shortArea">
+                <img class="logo" src="/static/Logo.png" />
+                <form 
+                    class="shortForm"
+                    onsubmit="handleSubmitShortUrl(event)"
+                >
+                    <input 
+                        type="text" 
+                        placeholder="place your url to short here"
+                        id="urlInput" 
+                    />
+                    <button type="submit">
+                        Short
+                    </button>
+                </form>
+            </div>
+
+            <div class="shortedUrlsArea">
+                <h1>Shorted Links</h1>
+
+                <table 
+                    class="shortedUrlsTable"
+                    cellspacing="15"
+                >
+                    <tr>
+                        <th>Original URL</th>
+                        <th>Shorted URL</th>
+                        <th>Copy</th>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+
+    </body>
+    <script>
+
+        function handleUpdateShortedUrlList(){
+
+            $('.shortedUrlTrs').remove();
+
+            let shortedUrls = localStorage.getItem('shortedUrls')
+
+            if(shortedUrls){
+                shortedUrls = JSON.parse(shortedUrls)
+            }else {
+                shortedUrls = []
+            }
+
+            shortedUrls.forEach((shortedUrl) => {
+
+                $('.shortedUrlsTable').append(
+                    `
+                    <tr class="shortedUrlTrs">
+                        <td>
+                            <a 
+                                href="${shortedUrl.originalUrl}"
+                                target="_blank"
+                            >
+                                ${shortedUrl.originalUrl.slice(0, 40)}
+                                ${
+                                    shortedUrl.originalUrl.length > 40 ? '...':'nop'
+                                }
+                            </a>
+                        </td>
+                        <td>
+                            <a 
+                                target="_blank"
+                                href="http://${location.host}/${shortedUrl.shortedUrlUuid}"
+                            >
+                                http://${location.host}/${shortedUrl.shortedUrlUuid}
+                            </a>
+                        </td>
+                        <td>
+                            <button 
+                                class="copyShortedUrlButton"
+                                onclick="handleClickToCopyShortedLink('${shortedUrl.shortedUrlUuid}')"
+                            >
+                                Copy Shorted URL
+                            </button>
+                        </td>
+                    </tr>
+                    `
+                )
+
+            })
+
+        }
+        
+        async function handleSubmitShortUrl(event){
+            event.preventDefault()
+
+            const url_input = document.getElementById('urlInput')
+            const url_input_value = url_input.value
+            
+            const data = new FormData()
+
+            data.append('url', url_input_value)
+
+            await fetch('/short', {
+                method: 'POST',
+                body: data
+            }).then(async (response) => {
+                const responseData = await response.json()
+
+                if(responseData.status !== 'ok'){
+                    return alert(responseData.message)
+                }else {
+                    let shortedUrls = localStorage.getItem('shortedUrls')
+                    if(shortedUrls){
+                        shortedUrls = JSON.parse(shortedUrls)
+                    }else {
+                        shortedUrls = []
+                    }
+
+                    const newShortedUrl =  {
+                        shortedUrlUuid: responseData.shorted_url_uuid,
+                        originalUrl: url_input_value
+                    }
+
+                    shortedUrls.push(newShortedUrl)
+
+                    localStorage.setItem('shortedUrls', JSON.stringify(shortedUrls))
+
+                    handleUpdateShortedUrlList()
+                     
+                }
+            }).catch((error) => {
+                if(error.response){
+                    alert(error.response.message)
+                }else {
+                    alert('The server not return a response')
+                }
+            })
+
+
+            url_input.value = ''
+            return false
+
+        }
+        
+        function handleClickToCopyShortedLink(uuid){
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(`http://${location.host}/${uuid}`).select();
+            document.execCommand("copy");
+            $temp.remove();
+            alert('copied')
+        }
+        handleUpdateShortedUrlList()
+    </script>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+</html>

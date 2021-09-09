@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: 200ms;
+    font-family: 'Mukta', monospace;
+}
+
+a {
+    color: #09022E;
+    text-decoration: none;
+    transition: 200ms;
+}
+
+a:hover {
+    opacity: 0.7;
+}
+
+body {
+    background-color: #DFDFDF;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.shortArea {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    background-color: #09022E;
+    height: 30rem;
+    gap: 4rem;
+    padding: 8rem;
+}
+
+.logo {
+    height: 10rem;
+    width: 10rem;
+}
+
+.shortForm {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    width: 100%;
+    justify-content: center;
+}
+
+.shortForm > input {
+    height: 4rem;
+    width: 50%;
+    border: 0;
+    border-radius: 5px 0 0 5px;
+    padding: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.shortForm > button {
+    display: flex;
+    height: 4rem;
+    width: 15%;
+    border: 0;
+    border-radius: 0 5px 5px 0;
+    background-color: #0B3350;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
+    transition: 200ms;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.shortForm > button:hover {
+    opacity: 0.7;
+}
+
+.shortedUrlsArea {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    padding: 2rem;
+    color: #09022E;
+    gap: 2rem;
+}
+
+.shortedUrlsTable {
+    background-color: #C4C4C4;
+    min-height: 10rem;
+    max-height: 20rem;
+    width: 80vw;
+    border-radius: 5px 5px 0 0;
+    padding: 1rem;
+    text-align: center;
+}
+
+.copyShortedUrlButton {
+    background-color: #1D1858;
+    color: #fff;
+    height: 4rem;
+    border: 0;
+    border-radius: 2px;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 200ms;
+} 
+
+.copyShortedUrlButton:hover {
+    opacity: 0.9;
+}

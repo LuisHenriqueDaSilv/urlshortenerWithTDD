@@ -1,0 +1,1 @@
+from .shorted_url import ShortedUrl
