@@ -54,7 +54,11 @@ pip install -r requirements.txt
   python3 run.py
 ```
 
-##### **If you want run the tests:**
+##### **Access app:**
+*You can access app in ```http://localhost:3000/```. If you want, can edit port in .env file*
+
+##### **Run the tests:**
 ```bash
 python3 -m unittest -v
 ```
+
