@@ -23,6 +23,7 @@
 
             <div class="shortArea">
                 <img class="logo" src="/static/Logo.png" />
+
                 <form 
                     class="shortForm"
                     onsubmit="handleSubmitShortUrl(event)"
@@ -36,6 +37,7 @@
                         Short
                     </button>
                 </form>
+
             </div>
 
             <div class="shortedUrlsArea">
@@ -51,6 +53,7 @@
                         <th>Copy</th>
                     </tr>
                 </table>
+
             </div>
             
         </div>
@@ -63,7 +66,6 @@
             $('.shortedUrlTrs').remove();
 
             let shortedUrls = localStorage.getItem('shortedUrls')
-
             if(shortedUrls){
                 shortedUrls = JSON.parse(shortedUrls)
             }else {
@@ -74,40 +76,42 @@
 
                 $('.shortedUrlsTable').append(
                     `
-                    <tr class="shortedUrlTrs">
-                        <td>
-                            <a 
-                                href="${shortedUrl.originalUrl}"
-                                target="_blank"
-                            >
-                                ${shortedUrl.originalUrl.slice(0, 40)}
-                                ${
-                                    shortedUrl.originalUrl.length > 40 ? '...':'nop'
-                                }
-                            </a>
-                        </td>
-                        <td>
-                            <a 
-                                target="_blank"
-                                href="http://${location.host}/${shortedUrl.shortedUrlUuid}"
-                            >
-                                http://${location.host}/${shortedUrl.shortedUrlUuid}
-                            </a>
-                        </td>
-                        <td>
-                            <button 
-                                class="copyShortedUrlButton"
-                                onclick="handleClickToCopyShortedLink('${shortedUrl.shortedUrlUuid}')"
-                            >
-                                Copy Shorted URL
-                            </button>
-                        </td>
-                    </tr>
+                        <tr class="shortedUrlTrs">
+
+                            <td>
+                                <a 
+                                    href="${shortedUrl.originalUrl}"
+                                    target="_blank"
+                                >
+                                    ${shortedUrl.originalUrl.slice(0, 40)}
+                                    ${
+                                        shortedUrl.originalUrl.length > 40 ? '...':'nop'
+                                    }
+                                </a>
+                            </td>
+
+                            <td>
+                                <a 
+                                    target="_blank"
+                                    href="http://${location.host}/${shortedUrl.shortedUrlUuid}"
+                                >
+                                    http://${location.host}/${shortedUrl.shortedUrlUuid}
+                                </a>
+                            </td>
+
+                            <td>
+                                <button 
+                                    class="copyShortedUrlButton"
+                                    onclick="handleClickToCopyShortedLink('${shortedUrl.shortedUrlUuid}')"
+                                >
+                                    Copy Shorted URL
+                                </button>
+                            </td>
+
+                        </tr>
                     `
                 )
-
             })
-
         }
         
         async function handleSubmitShortUrl(event){
@@ -117,7 +121,6 @@
             const url_input_value = url_input.value
             
             const data = new FormData()
-
             data.append('url', url_input_value)
 
             await fetch('/short', {
@@ -140,9 +143,7 @@
                         shortedUrlUuid: responseData.shorted_url_uuid,
                         originalUrl: url_input_value
                     }
-
                     shortedUrls.push(newShortedUrl)
-
                     localStorage.setItem('shortedUrls', JSON.stringify(shortedUrls))
 
                     handleUpdateShortedUrlList()
@@ -156,14 +157,12 @@
                 }
             })
 
-
             url_input.value = ''
             return false
-
         }
         
         function handleClickToCopyShortedLink(uuid){
-            var $temp = $("<input>");
+            const $temp = $("<input>");
             $("body").append($temp);
             $temp.val(`http://${location.host}/${uuid}`).select();
             document.execCommand("copy");
