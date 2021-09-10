@@ -33,7 +33,10 @@
                         placeholder="place your url to short here"
                         id="urlInput" 
                     />
-                    <button type="submit">
+                    <button 
+                        type="submit"
+                        id="submitShortButton"
+                    >
                         Short
                     </button>
                 </form>
@@ -117,6 +120,10 @@
         async function handleSubmitShortUrl(event){
             event.preventDefault()
 
+            const submitShortButton = document.getElementById('submitShortButton')
+            submitShortButton.disabled=true
+            submitShortButton.firstChild.data = "Shortening"
+
             const url_input = document.getElementById('urlInput')
             const url_input_value = url_input.value
             
@@ -158,6 +165,8 @@
             })
 
             url_input.value = ''
+            submitShortButton.disabled=false
+            submitShortButton.firstChild.data = "Short"
             return false
         }
         
