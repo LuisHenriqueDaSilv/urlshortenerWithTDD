@@ -80,6 +80,10 @@ body {
     opacity: 0.7;
 }
 
+.shortForm > button:disabled {
+    background-color: #041c2e;
+}
+
 .shortedUrlsArea {
     display: flex;
     flex-direction: column;
